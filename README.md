@@ -1,49 +1,57 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby Minimal TypeScript Starter
-</h1>
+# 流程
 
-## 🚀 Quick start
+## 初始化项目
 
-1.  **Create a Gatsby site.**
+```bash
+npm init gatsby -- -y -ts
+```
 
-    Use the Gatsby CLI to create a new site, specifying the minimal TypeScript starter.
+## 插件配置
 
-    ```shell
-    # create a new Gatsby site using the minimal TypeScript starter
-    npm init gatsby -- -ts
-    ```
+> 插件地址： <https://www.gatsbyjs.com/plugins>
 
-2.  **Start developing.**
+1.安装插件
 
-    Navigate into your new site’s directory and start it up.
+```bash
+npm install plugin-name
+```
 
-    ```shell
-    cd my-gatsby-site/
-    npm run develop
-    ```
+2.配置插件
 
-3.  **Open the code and start customizing!**
+> gatsby-config.ts 文件
 
-    Your site is now running at http://localhost:8000!
+```diff
+const config: GatsbyConfig = {
+  siteMetadata: {
+    title: `gatsby-learn`,
+    siteUrl: `https://www.yourdomain.tld`,
+  },
++  plugins: ['gatsby-plugin-image', 'gatsby-plugin-sharp'],
+};
+```
 
-    Edit `src/pages/index.tsx` to see your site update in real-time!
+## 使用 GraphQL
 
-4.  **Learn more**
+### 文档
 
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
-    - [Tutorials](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
-    - [Guides](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter-ts)
+1. <https://www.howtographql.com/basics/1-graphql-is-the-better-rest/>
+2. <https://graphql.org/learn/schema/#union-types>
 
-## 🚀 Quick start (Netlify)
+### useStaticQuery
 
-Deploy this starter with one click on [Netlify](https://app.netlify.com/signup):
+> 请求 GraphQL 中的数据
 
-[<img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-minimal-ts)
+```js
+import { useStaticQuery, graphql } from 'gatsby';
+const data = useStaticQuery(graphql`
+  query {
+    site {
+      siteMetadata {
+        description
+        siteUrl
+        title
+      }
+    }
+  }
+`);
+```
