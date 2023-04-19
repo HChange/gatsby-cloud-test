@@ -16,15 +16,23 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@mdx-js/react": "^2.3.0",
     "gatsby": "^5.8.1",
     "gatsby-plugin-image": "^3.8.0",
     "gatsby-plugin-less": "^7.8.0",
+    "gatsby-plugin-mdx": "^5.9.0",
     "gatsby-plugin-sharp": "^5.8.1",
-    "gatsby-source-filesystem": "^5.8.0",
+    "gatsby-remark-autolink-headers": "^6.9.0",
+    "gatsby-remark-images": "^7.9.0",
+    "gatsby-remark-prismjs": "^7.9.0",
+    "gatsby-source-filesystem": "^5.9.0",
+    "gatsby-transformer-remark": "^6.9.0",
+    "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/estree-jsx": "^1.0.0",
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",

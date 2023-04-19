@@ -55,3 +55,36 @@ const data = useStaticQuery(graphql`
   }
 `);
 ```
+
+## 引入MDX
+
+### 依赖安装
+
+> <https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/?=gatsby-plugin-mdx>
+> gatsby-source-filesystem 创建文件节点
+> gatsby-plugin-mdx 将文件节点转化为MDX节点。为GraphQL 查询提供了allMdx和mdx字段。
+> @mdx-js/react 将 MDX 实现映射到 React 组件。
+
+```bash
+yarn add gatsby-source-filesystem gatsby-plugin-mdx @mdx-js/react -S  
+```
+
+### 配置
+
+```diff gatsby-config.ts
+module.exports = {
+  plugins: [
++    `gatsby-plugin-mdx`,
++    {
++      resolve: `gatsby-source-filesystem`,
++      options: {
++        name: `blog`,
++        path: `${__dirname}/src/blog`,
++      },
++    },
+  ],
+}
+```
+
+### 扩展MDX功能
+gatsby-remark-images gatsby-remark-prismjs gatsby-remark-autolink-header gatsby-transformer-remark
