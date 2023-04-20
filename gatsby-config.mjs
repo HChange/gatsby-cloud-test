@@ -1,6 +1,8 @@
-import type { GatsbyConfig } from 'gatsby';
+// import type { GatsbyConfig } from 'gatsby';
+// import { wrapESMPlugin } from './wrap';
+import G from 'remark-gfm';
 
-const config: GatsbyConfig = {
+const config = {
   siteMetadata: {
     title: `gatsby-learn`,
     siteUrl: `https://www.yourdomain.tld`,
@@ -30,7 +32,7 @@ const config: GatsbyConfig = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `blog`,
-        path: `${__dirname}/src/pages`,
+        path: `./src/pages`,
       },
     },
     // {
@@ -52,6 +54,9 @@ const config: GatsbyConfig = {
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
+        mdxOptions: {
+          remarkPlugins: [G],
+        },
         extensions: [`.md`, `.mdx`],
         gatsbyRemarkPlugins: [
           {

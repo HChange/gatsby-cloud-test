@@ -124,6 +124,12 @@ module.exports = {
 
 ### 安装
 
+```bash
+yarn add gatsby-remark-images gatsby-remark-prismjs gatsby-remark-autolink-header prismjs -S
+```
+
+### 配置
+
 ```diff
 module.exports = {
   plugins: [
@@ -151,3 +157,5 @@ module.exports = {
  ]
 }
 ```
+
+新建`gatsby-browser.js`文件，引入样式
