@@ -1,8 +1,8 @@
 ---
-name: "Blog"
-creator: "Change"
-time: "2023年4月19日21:31:11"
-slug: "jqx"
+name: 'Blog'
+creator: 'Change'
+time: '2023年4月19日21:32:11'
+slug: 'jqx'
 ---
 
 # This is Blog
@@ -17,7 +17,7 @@ npm init gatsby -- -y -ts
 
 ## 插件配置
 
-> 插件地址： https://www.gatsbyjs.com/plugins
+> 插件地址： [https://www.gatsbyjs.com/plugins](https://www.gatsbyjs.com/plugins)
 
 1.安装插件
 
@@ -65,21 +65,21 @@ const data = useStaticQuery(graphql`
 `);
 ```
 
-## 引入MDX
+## 引入 MDX
 
 ### 依赖安装
 
 > https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/?=gatsby-plugin-mdx
 > gatsby-source-filesystem 创建文件节点
-> gatsby-plugin-mdx 将文件节点转化为MDX节点。为GraphQL 查询提供了allMdx和mdx字段。
+> gatsby-plugin-mdx 将文件节点转化为 MDX 节点。为 GraphQL 查询提供了 allMdx 和 mdx 字段。
 
 ```bash
-yarn add gatsby-source-filesystem gatsby-plugin-mdx @mdx-js/react -S  
+yarn add gatsby-source-filesystem gatsby-plugin-mdx @mdx-js/react -S
 ```
 
 ### 配置
 
-```diff 
+```diff
 module.exports = {
   plugins: [
 +    `gatsby-plugin-mdx`,

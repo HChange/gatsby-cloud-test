@@ -1,0 +1,8 @@
+node_modules
+dist
+**/*.map
+**/*.d.ts
+**/lib/**
+**/libs/**
+**/sourceCode/**
+build
