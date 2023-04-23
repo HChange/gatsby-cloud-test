@@ -2,7 +2,8 @@
 name: 'Blog'
 creator: 'Change'
 time: '2023年4月19日21:31:11'
-slug: 'docx'
+slug: 'my-doc'
+router: 'niubi3'
 ---
 
 # This is Blog

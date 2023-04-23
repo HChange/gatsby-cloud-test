@@ -58,6 +58,8 @@ const data = useStaticQuery(graphql`
 
 ### 注入 props 中
 
+> export const query 的查询结果会当作当前 export 组件的 props.data 传入
+
 ```jsx
 import { graphql } from 'gatsby';
 import React from 'react';
@@ -121,16 +123,30 @@ module.exports = {
 > gatsby-remark-images 优化图片生成响应图像
 > gatsby-remark-prismjs 引入 prismjs mdx 页面添加样式
 > gatsby-remark-autolink-header 给 header 添加锚点
+> remark-gfm 增强 mdx 识别的语法
 
 ### 安装
 
+```bash
+yarn add gatsby-remark-images gatsby-remark-prismjs gatsby-remark-autolink-header prismjs remark-gfm -S
+```
+
+### 配置
+
+> 因为 remark-gfm 最新版本只能使用 esm，所以该处将`gatsby-config.ts`==> `gatsby-config.mjs`
+
 ```diff
-module.exports = {
++ import G from 'remark-gfm';
+
+const config =  {
   plugins: [
 -  `gatsby-plugin-mdx`,
 +   {
 +      resolve: `gatsby-plugin-mdx`,
 +      options: {
++        mdxOptions: {
++          remarkPlugins: [G],
++        },
 +        extensions: [`.md`, `.mdx`], // 设置匹配文件后缀
 +        gatsbyRemarkPlugins: [
 +          {
@@ -150,4 +166,55 @@ module.exports = {
 +    },
  ]
 }
+export default config;
 ```
+
+新建`gatsby-browser.js`文件，引入样式
+
+```js
+require('prismjs/themes/prism.min.css');
+```
+
+## 动态创建页面
+
+> 语法: `{nodeType.field}`
+
+### 新建一个动态路由规则
+
+在`src/pages`下新增`{mdx.frontmatter__router}.tsx`文件，gatsby 将自动为`frontmatter`含有`router`字段的`.mdx、.md`文件创建路由。路由地址为`basepath/mdx.frontmatter__router`。
+
+### 为动态路由匹配的页面注入数据
+
+```tsx
+import { graphql } from 'gatsby';
+import React from 'react';
+
+const Status = (props: any) => {
+  console.log(props);
+  return (
+    <div>
+      静态页面<div>{props.children}</div>
+    </div>
+  );
+};
+
+// props.pageContext的数据变成传参查询。 如下面请求$frontmatter__router即props.pageContext.frontmatter__router作为参数。一般使用$id进行查询
+export const query = graphql`
+  query MyQuery($frontmatter__router: String = "") {
+    mdx(frontmatter: { router: { eq: $frontmatter__router } }) {
+      id
+      frontmatter {
+        name
+        creator
+        time
+        slug
+        router
+        date
+      }
+    }
+  }
+`;
+export default Status;
+```
+
+## MDX banner 图引入以及优化

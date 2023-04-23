@@ -1,6 +1,8 @@
-import type { GatsbyConfig } from 'gatsby';
+// import type { GatsbyConfig } from 'gatsby';
+// import { wrapESMPlugin } from './wrap';
+import G from 'remark-gfm';
 
-const config: GatsbyConfig = {
+const config = {
   siteMetadata: {
     title: `gatsby-learn`,
     siteUrl: `https://www.yourdomain.tld`,
@@ -29,29 +31,23 @@ const config: GatsbyConfig = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `blog`,
-        path: `${__dirname}/src/pages`,
+        name: `pages`,
+        path: `./src/pages`,
       },
     },
-    // {
-    //   resolve: `gatsby-transformer-remark`,
-    //   options: {
-    //     plugins: [
-    //       {
-    //         resolve: `gatsby-remark-images`,
-    //         options: {
-    //           // It's important to specify the maxWidth (in pixels) of
-    //           // the content container as this plugin uses this as the
-    //           // base for generating different widths of each image.
-    //           maxWidth: 590,
-    //         },
-    //       },
-    //     ],
-    //   },
-    // },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `blog`,
+        path: `./src/blog`,
+      },
+    },
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
+        mdxOptions: {
+          remarkPlugins: [G],
+        },
         extensions: [`.md`, `.mdx`],
         gatsbyRemarkPlugins: [
           {

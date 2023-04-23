@@ -2,7 +2,8 @@ import * as React from 'react';
 import { HeadFC, PageProps, useStaticQuery, graphql } from 'gatsby';
 import { main } from './index.module.less';
 
-const IndexPage: React.FC<PageProps> = () => {
+const IndexPage: React.FC<PageProps> = (props: any) => {
+  console.log(props);
   const data = useStaticQuery(graphql`
     query {
       site {
