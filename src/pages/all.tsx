@@ -29,10 +29,7 @@ export const query = graphql`
         frontmatter {
           name
           time
-<<<<<<< HEAD
-=======
           router
->>>>>>> df7414838bf95aaac74966615463e0fc4729e71b
         }
         id
         excerpt
