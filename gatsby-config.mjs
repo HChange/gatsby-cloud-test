@@ -43,6 +43,20 @@ const config = {
       },
     },
     {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `create`,
+        path: `./src/create`,
+      },
+    },
+    // 创建页面
+    {
+      resolve: `gatsby-plugin-page-creator`,
+      options: {
+        path: `./src/create`,
+      },
+    },
+    {
       resolve: `gatsby-plugin-mdx`,
       options: {
         mdxOptions: {
@@ -138,6 +152,7 @@ const config = {
         ],
       },
     },
+    'gatsby-transformer-sharp',
   ],
 };
 

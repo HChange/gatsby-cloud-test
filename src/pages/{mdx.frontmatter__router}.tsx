@@ -1,10 +1,16 @@
 import { graphql } from 'gatsby';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import React from 'react';
 
 const Status = (props: any) => {
   console.log(props);
+  const { data } = props;
+  // 等价于：data.mdx.frontmatter.hero_image.childImageSharp.gatsbyImageData
+  const image = getImage(data.mdx.frontmatter.hero_image);
+
   return (
     <div>
+      <div>{image && <GatsbyImage image={image} alt={data.mdx.frontmatter.hero_image_alt} />}</div>
       mdx静态页面<div>{props.children}</div>
     </div>
   );
@@ -22,6 +28,12 @@ export const query = graphql`
         slug
         router
         date
+        hero_image_alt
+        hero_image {
+          childImageSharp {
+            gatsbyImageData
+          }
+        }
       }
     }
   }
