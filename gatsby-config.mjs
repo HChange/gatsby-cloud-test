@@ -31,26 +31,31 @@ const config = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `blog`,
+        name: `pages`,
         path: `./src/pages`,
       },
     },
-    // {
-    //   resolve: `gatsby-transformer-remark`,
-    //   options: {
-    //     plugins: [
-    //       {
-    //         resolve: `gatsby-remark-images`,
-    //         options: {
-    //           // It's important to specify the maxWidth (in pixels) of
-    //           // the content container as this plugin uses this as the
-    //           // base for generating different widths of each image.
-    //           maxWidth: 590,
-    //         },
-    //       },
-    //     ],
-    //   },
-    // },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `blog`,
+        path: `./src/blog`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `create`,
+        path: `./src/create`,
+      },
+    },
+    // 创建页面
+    {
+      resolve: `gatsby-plugin-page-creator`,
+      options: {
+        path: `./src/create`,
+      },
+    },
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
@@ -147,6 +152,7 @@ const config = {
         ],
       },
     },
+    'gatsby-transformer-sharp',
   ],
 };
 
