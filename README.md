@@ -276,3 +276,32 @@ export const query = graphql`
 `;
 export default Status;
 ```
+
+### 简单构建插件
+
+#### 创建 node（sourceNode）
+
+1. 导出 `sourceNodes`
+2. 创建 id `createNodeId`
+3. 创建 node `actions.createNode`
+
+#### 创建映射
+
+> 创建 node 时会自动推断类型但是可能不并不准确
+
+1. 导出 `createSchemaCustomization`
+2. 创建类型 `actions.createTypes`
+
+#### 参数校验
+
+1. 导出 `pluginOptionsSchema`
+2. return Joi.object({
+   endpoint: Joi.string()
+   .uri()
+   .required()
+   .description(`The endpoint of your GraphQL API`),
+   })
+
+#### 初始化
+
+1. 导出 `onPluginInit`
