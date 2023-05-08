@@ -51,7 +51,7 @@ const config: GatsbyConfig = {
 
 > 请求 GraphQL 中的数据
 
-```js
+```js{numberLines: true}
 import { useStaticQuery, graphql } from 'gatsby';
 const data = useStaticQuery(graphql`
   query {
@@ -80,7 +80,7 @@ yarn add gatsby-source-filesystem gatsby-plugin-mdx @mdx-js/react -S
 
 ### 配置
 
-```diff
+```diff-js
 module.exports = {
   plugins: [
 +    `gatsby-plugin-mdx`,
@@ -96,3 +96,21 @@ module.exports = {
 ```
 
 ![图片](https://static.hellochange.cn/images/blog/webpack-process.png)
+
+A note[^1]
+
+[^1]: Big note.
+
+## Strikethrough
+
+~one~ or ~~two~~ tildes.
+
+## Table
+
+| a   | b   |   c |  d  |
+| --- | :-- | --: | :-: |
+
+## Tasklist
+
+- [ ] to do
+- [x] done
