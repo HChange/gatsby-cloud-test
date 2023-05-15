@@ -1,13 +1,13 @@
-import { graphql } from 'gatsby';
+import { PageProps, graphql } from 'gatsby';
 import React from 'react';
 
-const Status = (props: any) => {
-  console.log(Object.entries(props.data.file));
+const FileInfo = (props: PageProps<Queries.FileInfoQuery>) => {
+  console.log(Object.entries(props.data.file || {}));
   return (
     <div>
       file静态页面
       {props.data.file &&
-        Object.entries(props.data.file).map(([key, value]: any) => (
+        Object.entries(props.data.file).map(([key, value]) => (
           <p key={key}>
             {key}:{String(value)}
           </p>
@@ -18,7 +18,7 @@ const Status = (props: any) => {
 
 // props.pageContext的字段变成传参查询。 $id即props.pageContext.id作为参数
 export const query = graphql`
-  query MyQuery($id: String = "") {
+  query FileInfo($id: String = "") {
     file(id: { eq: $id }) {
       root
       relativePath
@@ -39,4 +39,4 @@ export const query = graphql`
     }
   }
 `;
-export default Status;
+export default FileInfo;

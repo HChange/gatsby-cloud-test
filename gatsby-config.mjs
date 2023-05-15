@@ -1,17 +1,27 @@
 // import type { GatsbyConfig } from 'gatsby';
 // import { wrapESMPlugin } from './wrap';
 import G from 'remark-gfm';
+import dotenv from 'dotenv';
 
+dotenv.config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+dotenv.config({
+  path: '.env',
+});
+
+console.dir(process.env);
 const config = {
   siteMetadata: {
     title: `gatsby-learn`,
     siteUrl: `https://www.yourdomain.tld`,
     description: 'Gatsby Learn',
+    image: '/',
   },
   // More easily incorporate content into your pages through automatic TypeScript type generation and better GraphQL IntelliSense.
   // If you use VSCode you can also use the GraphQL plugin
   // Learn more at: https://gatsby.dev/graphql-typegen
-  graphqlTypegen: true,
+  graphqlTypegen: { typesOutputPath: `gatsby-types.d.ts` },
   plugins: [
     {
       resolve: `gatsby-plugin-less`,
@@ -49,6 +59,13 @@ const config = {
         path: `./src/create`,
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `content`,
+        path: `./src/content`,
+      },
+    },
     // 创建页面
     {
       resolve: `gatsby-plugin-page-creator`,
@@ -76,6 +93,7 @@ const config = {
             },
           },
           {
+            // mdx文件内图片处理
             resolve: `gatsby-remark-images`,
             options: {
               // It's important to specify the maxWidth (in pixels) of
@@ -153,7 +171,19 @@ const config = {
       },
     },
     'gatsby-transformer-sharp',
+    {
+      resolve: `gatsby-omni-font-loader`,
+      options: {
+        enableListener: true,
+        preconnect: [`https://fonts.googleapis.com`, `https://fonts.gstatic.com`],
+        web: [
+          {
+            name: `Inter`,
+            file: `https://fonts.googleapis.com/css2?family=Inter&display=swap`,
+          },
+        ],
+      },
+    },
   ],
 };
-
 export default config;

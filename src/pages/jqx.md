@@ -3,6 +3,7 @@ name: 'Blog'
 creator: 'Change'
 time: '2023年4月19日21:32:11'
 slug: 'jqx'
+router: 'jqx'
 ---
 
 # This is Blog
@@ -95,3 +96,4 @@ module.exports = {
 ```
 
 ![图片](https://static.hellochange.cn/images/blog/webpack-process.png)
+![图片2](./icon.png)

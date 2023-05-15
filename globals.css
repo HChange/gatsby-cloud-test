@@ -1,3 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
 .command-line-prompt > span:before {
   color: #999;
   content: ' ';
@@ -72,4 +82,8 @@
   overflow: initial;
   float: left; /* 1 */
   min-width: 100%; /* 2 */
+}
+
+.Inter {
+  font-family: 'Inter';
 }

@@ -1,10 +1,13 @@
 import { Link, graphql } from 'gatsby';
+import H from '../content/header.mdx';
+
 import React from 'react';
 
 const All = ({ data }: any) => {
   return (
     <div>
-      {' '}
+      <H />
+      <div>API:{process.env.GATSBY_API_KEY}</div>
       {data.allMdx.nodes.map((node: any) => (
         <article key={node.id}>
           <h2>{node.frontmatter.name}</h2>
@@ -23,7 +26,7 @@ export const Hello = ({ data }: any) => <>hello</>;
 
 // 查询的结果将作为当前文件全部导出的props.data
 export const query = graphql`
-  query {
+  query All {
     allMdx(sort: { frontmatter: { date: DESC } }) {
       nodes {
         frontmatter {

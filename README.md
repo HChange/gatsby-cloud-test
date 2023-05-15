@@ -118,6 +118,25 @@ module.exports = {
 }
 ```
 
+### MDX 文件导入 jsx 文件
+
+> jsx 文件可以直接 import src/content 中的 mdx 文件
+
+1. 配置 gatsby-config.mjs
+
+```diff
+  plugins: [
+    // Your other plugins...
++    {
++      resolve: `gatsby-source-filesystem`,
++      options: {
++        name: `content`,
++        path: `./src/content`,
++      },
++    },
+  ]
+```
+
 ## 扩展 `gatsby-plugin-mdx` 功能
 
 > gatsby-remark-images 优化图片生成响应图像
@@ -277,22 +296,22 @@ export const query = graphql`
 export default Status;
 ```
 
-### 简单构建插件
+## 简单构建插件
 
-#### 创建 node（sourceNode）
+### 创建 node（sourceNode）
 
 1. 导出 `sourceNodes`
 2. 创建 id `createNodeId`
 3. 创建 node `actions.createNode`
 
-#### 创建映射
+### 创建映射
 
 > 创建 node 时会自动推断类型但是可能不并不准确
 
 1. 导出 `createSchemaCustomization`
 2. 创建类型 `actions.createTypes`
 
-#### 参数校验
+### 参数校验
 
 1. 导出 `pluginOptionsSchema`
 2. return Joi.object({
@@ -302,6 +321,301 @@ export default Status;
    .description(`The endpoint of your GraphQL API`),
    })
 
-#### 初始化
+### 初始化
 
 1. 导出 `onPluginInit`
+
+## 项目配置
+
+### 环境变量配置
+
+> 使用 .env 以及 .env.xxx 配置环境变量
+
+1. 新建`.env`、`.env.development`
+
+```test .env
+API_KEY = .env运行时可以看到的API_KEY
+GATSBY_API_KEY = 浏览器可以看到的API_KEY
+```
+
+```test .env.development
+API_KEY = .env.development运行时可以看到的API_KEY
+```
+
+2. 引入配置
+
+> gatsby-config.mjs 文件, 此时.env 可以配置公共的配置。.env.xxx 可以配置私人配置
+
+```diff
++ import dotenv from 'dotenv';
+
++ dotenv.config({
++  path: `.env.${process.env.NODE_ENV}`,
++ });
++ dotenv.config({
++  path: '.env',
++ });
+```
+
+3. 使用
+
+node 运行环境：`process.env.API_KEY`
+浏览器环境：必须使用`GATSBY_` 修饰，`process.env.GATSBY_API_KEY`
+
+### 自动生成 graphql 数据类型
+
+1. gatsby-config 启用
+
+```diff
+const config = {
+ ...
++  graphqlTypegen: { typesOutputPath: `gatsby-types.d.ts` },
+ ...
+}
+```
+
+### Router 配置
+
+1. src/pages/xxx 文件，自动创建 xxx 路由
+
+2. 使用文件系统路由，即上文提到的 `{mdx.frontmatter__router}.tsx`
+
+3. createPages
+
+```ts gatsby-node.ts
+export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions }) => {
+  const { data } = await graphql<any>(`
+    query AllMdxQuery {
+      allMdx {
+        nodes {
+          frontmatter {
+            router
+          }
+        }
+      }
+    }
+  `);
+
+  // console.dir(data);
+  data?.allMdx?.nodes?.forEach((item: any) => {
+    const router = item.frontmatter?.router;
+    router &&
+      createPage({
+        // 路由
+        path: `/layout/${router}`,
+        // 渲染的页面
+        component: resolve('./src/components/Layout/query.tsx'),
+        // 传递给component的pageContext，可作为grahpl的筛选条件
+        context: { router },
+      });
+  });
+};
+```
+
+## 添加 layout
+
+### `.tsx` 页面
+
+直接使用 layout 包裹
+
+### `.mdx`、`.md`文件
+
+gatsby-node
+
+```ts
+export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions }) => {
+  const { createPage } = actions;
+
+  const { data } = await graphql<any>(`
+    query AllMdxQuery {
+      allMdx {
+        nodes {
+          id
+          frontmatter {
+            router
+          }
+          internal {
+            contentFilePath
+          }
+        }
+      }
+    }
+  `);
+
+  // console.dir(data);
+  data?.allMdx?.nodes?.forEach((item: any) => {
+    const router = item.frontmatter?.router;
+    router &&
+      createPage({
+        path: `/layout/${router}`,
+        // 如果是： node.internal.contentFilePath 直接渲染。如果是 __contentFilePath 则当作children传入到Layout
+        component: `${resolve('./src/components/Layout/query.tsx')}?__contentFilePath=${item.internal.contentFilePath}`,
+        context: { router },
+      });
+  });
+};
+```
+
+## 样式
+
+### 引入 less
+
+1. 安装`gatsby-plugin-less`
+
+2. 配置
+
+```diff
+ plugins: [
++  {
++    resolve: `gatsby-plugin-less`,
++    // https://github.com/webpack-contrib/css-loader
++    options: {
++      cssLoaderOptions: {
++        camelCase: false,
++      },
++
++        modules: {
++          mode: 'global',
++        },
++      },
++    },
+ ]
+```
+
+### 引入 Tailwind
+
+> https://tailwindcss.com/docs/guides/gatsby
+
+1. 安装
+
+```bash
+npm install -D tailwindcss postcss autoprefixer gatsby-plugin-postcss
+```
+
+2. 初始化
+
+> 创建`postcss.config.js`和`tailwind.config.js`
+
+```bash
+npx tailwindcss init -p
+```
+
+3. 配置 gatsby-config
+
+```diff
+plugins: [
++    'gatsby-plugin-postcss',
+    // ...
+],
+```
+
+4. 配置模板路径
+
+> 哪些页面需要用到 tailwind
+
+```js tailwind.config
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ['./src/pages/**/*.{js,jsx,ts,tsx}', './src/components/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+```
+
+5. 将 Tailwind 指令添加添加到 css
+
+> 引入一些默认样式
+
+```css globals.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+6. 将全局样式导出
+
+```js gatsby-browser.ts
+import './globals.css';
+```
+
+## 引入字体
+
+### 本地字体
+
+1. 新建`gatsby-ssr.tsx`
+
+```tsx
+import { GatsbySSR } from 'gatsby';
+import React from 'react';
+
+export const onRenderBody: GatsbySSR['onRenderBody'] = ({ setHeadComponents }) => {
+  return setHeadComponents([
+    <link
+      rel="preload"
+      href="/fonts/Inter-roman.var.woff2"
+      as="font"
+      type="font/woff2"
+      crossOrigin="anonymous"
+      key="interFont"
+    />,
+  ]);
+};
+```
+
+2. 全局样式引入
+
+```diff globals.css
+@font-face {
+  font-family: 'Inter var';
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+  font-named-instance: 'Regular';
+  src: url(/fonts/Inter-roman.var.woff2) format("woff2");
+}
+```
+
+### 网络字体
+
+> 本文使用 google 字体
+
+1. 安装依赖
+
+```bash
+yarn add gatsby-omni-font-loader react-helmet
+```
+
+2. 配置 gatsby-config
+
+```ts
+Copygatsby-config.js: copy code to clipboard
+ export const config =  {
+  plugins: [
+    {
+      resolve: `gatsby-omni-font-loader`,
+      options: {
+        enableListener: true,
+        preconnect: [`https://fonts.googleapis.com`, `https://fonts.gstatic.com`],
+        web: [
+          {
+            name: `Inter`,
+            file: `https://fonts.googleapis.com/css2?family=Inter&display=swap`,
+          },
+        ],
+      },
+    },
+  ]
+}
+```
+
+3. 全局引用
+
+```css
+.Inter {
+  font-family: 'Inter';
+}
+```
+
+## 静态目录
