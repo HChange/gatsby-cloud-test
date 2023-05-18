@@ -2,6 +2,7 @@
 // import { wrapESMPlugin } from './wrap';
 import G from 'remark-gfm';
 import dotenv from 'dotenv';
+import algoliaQueries from './src/utils/algolia-queries.mjs';
 
 dotenv.config({
   path: `.env.${process.env.NODE_ENV}`,
@@ -184,6 +185,15 @@ const config = {
         ],
       },
     },
+    {
+      resolve: `gatsby-plugin-algolia`,
+      options: {
+        appId: process.env.GATSBY_ALGOLIA_APP_ID,
+        apiKey: process.env.ALGOLIA_ADMIN_KEY,
+        queries: algoliaQueries,
+      },
+    },
+    `gatsby-plugin-styled-components`,
   ],
 };
 export default config;
